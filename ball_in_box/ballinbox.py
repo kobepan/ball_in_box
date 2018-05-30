@@ -58,7 +58,7 @@ def isValidate(candidate, blockers, centroids, proxies):
 
 
 def visualization():
-  proxies = ball_in_box()
+	proxies = ball_in_box()
 	blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]
 	plt.Rectangle((-1,-1),2,2)
 	for blocker in blockers:
