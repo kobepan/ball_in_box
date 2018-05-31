@@ -4,57 +4,80 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
-	tol = 1e-2#set the accuracy, which means our answer should bounds in (r-tol,r+tol), r is the exactly right answer
-	lower_bound = 0
-	upper_bound = 2
-	r_pre = -1
-	r_now = 1
-	proxies = None
-	while(abs(r_pre-r_now) >= tol):#when our accuracy has not been satisfied yet, we continue iterate
-		mid = (lower_bound + upper_bound) / 2
-		isVal, proxies = isValid(mid, m, blockers)
-		if(isVal):
-			lower_bound = mid
-			r_pre = r_now
-			r_now = mid
-		else:
-			upper_bound = mid
-	return proxies
-			
-
-def isValid(candidate, m, blockers):
-	max_random_ite_time = 20000
-	for i in range(max_random_ite_time):
-		centroids = []
-		for num in range(m):
-			x = random.uniform(-1+candidate,1-candidate)
-			y = random.uniform(-1+candidate,1-candidate)
-			if(isValidate(candidate, blockers, centroids, [x,y])):
-				centroids.append((x,y,candidate))
+	candidate_num = 100
+	candidates = [1 - candi*(1.0/candidate_num) for candi in range(candidate_num)]
+	r_index = 0
+	centroids = []
+	for i in range(m):
+		while(r_index < candidate_num):
+			flag = isValid(candidates[r_index], blockers, centroids)
+			if(flag):
+				break
 			else:
-				x = random.uniform(-1+candidate,1-candidate)
-				y = random.uniform(-1+candidate,1-candidate)
-				if(isValidate(candidate, blockers, centroids, [x,y])):
-					centroids.append((x,y,candidate))
-				else:
-					break;
-					
-		if(len(centroids)==m):
-			return True, centroids
-	
-	return False, None
-	
+				r_index += 1
+		if(i+1 != len(centroids)):
+			print("error")
+			exit(0)
+		
+	return centroids
 
-def isValidate(candidate, blockers, centroids, proxies):
-	r_2 = candidate**2
-	r_2_2 = 4 * r_2
-	for blocker in blockers:
-		if((proxies[0]-blocker[0])**2 + (proxies[1]-blocker[1])**2 < r_2):
+
+def isValid(candidate, blockers, centroids):
+	max_random_ite_time = 30000
+	for i in range(max_random_ite_time):
+		x = random.uniform(-1+candidate,1-candidate)
+		y = random.uniform(-1+candidate,1-candidate)
+		if(isValidate(blockers, centroids, (x,y,candidate))):
+			centroids.append((x,y,candidate))
+			return True
+	
+	return False
+
+
+	def isValidate(blockers, circless, proxies):
+	# Is circle in the box?
+	circles = circless.copy()
+	circles.append(proxies)
+	for circle in circles:
+		xmr = circle[0] - circle[2]
+		xpr = circle[0] + circle[2]
+		ymr = circle[1] - circle[2]
+		ypr = circle[1] + circle[2]
+	
+		if (not (xmr <= 1 and xmr >=-1 )) \
+		   or (not (xpr <= 1 and xpr >=-1 )) \
+		   or (not (ymr <= 1 and ymr >=-1 )) \
+		   or (not (ypr <= 1 and ypr >=-1 )):
 			return False
-	for centroid in centroids:
-		if((proxies[0]-centroid[0])**2 + (proxies[1]-centroid[1])**2 < r_2_2):
-			return False
+	# Is circle good for blockers?
+	if blockers is not None and len(blockers) > 0:
+		for circle in circles:
+			for block in blockers:
+				x = circle[0]
+				y = circle[1]
+				r = circle[2]
+				bx = block[0]
+				by = block[1]
+				if math.sqrt((x - bx)**2 + (y - by)**2) < r:
+					return False
+	
+	# Is circle good for each other?
+	for circle1 in circles:
+		for circle2 in circles:
+			if(circle1 == circle2):
+				continue
+			x1 = circle1[0]
+			y1 = circle1[1]
+			r1 = circle1[2]
+			x2 = circle2[0]
+			y2 = circle2[1]
+			r2 = circle2[2]
+			if math.sqrt((x1 - x2)**2 + (y1 - y2)**2) < (r1 + r2):
+				return False
+	
+	# all good
 	return True
+
 
 
 def visualization():
