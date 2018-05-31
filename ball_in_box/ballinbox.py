@@ -18,7 +18,6 @@ def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
 		if(i+1 != len(centroids)):
 			print("error")
 			exit(0)
-		
 	return centroids
 
 
@@ -30,11 +29,10 @@ def isValid(candidate, blockers, centroids):
 		if(isValidate(blockers, centroids, (x,y,candidate))):
 			centroids.append((x,y,candidate))
 			return True
-	
 	return False
 
 
-	def isValidate(blockers, circless, proxies):
+def isValidate(blockers, circless, proxies):
 	# Is circle in the box?
 	circles = circless.copy()
 	circles.append(proxies)
