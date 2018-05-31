@@ -1,0 +1,7 @@
+                    ReadMe About Ball_in_Box
+As an operator, I want to set some circles in the square whose x and y both varies from -1 to 1.
+As an operator, I have to set some points with positive amount in the square first.
+As an operator, I want to make sure that the circles don¡¯t intersect with each other.
+As an operator, I want to make sure that the circles don¡¯t cover the points in the square.
+As an operator, I want to make sure that the total area of all the circles I have set is the biggest.
+As an operator, I want to gain the accurate area of the total circles.
