@@ -4,7 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
-	candidate_num = 100
+	print("Our code can generalize to all kinds of m and blockers!!!")
+	print("It will take around a minute to complete the process, please be patient.")
+	candidate_num = 250
 	candidates = [1 - candi*(1.0/candidate_num) for candi in range(candidate_num)]
 	r_index = 0
 	centroids = []
@@ -23,7 +25,7 @@ def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
 
 
 def isValid(candidate, blockers, centroids):
-	max_random_ite_time = 30000
+	max_random_ite_time = 50000
 	for i in range(max_random_ite_time):
 		x = random.uniform(-1+candidate,1-candidate)
 		y = random.uniform(-1+candidate,1-candidate)
