@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
 	print("Our code can generalize to all kinds of m and blockers!!!")
-	print("It will take around a minute to complete the process, please be patient.")
-	candidate_num = 250
+	print("It will take around 3 minute to complete the process, please be patient.")
+	candidate_num = 500
 	candidates = [1 - candi*(1.0/candidate_num) for candi in range(candidate_num)]
 	r_index = 0
 	centroids = []
